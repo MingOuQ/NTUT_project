@@ -164,17 +164,87 @@ python defect_detector.py --cam COM3 --ctrl COM4
    * 掃描期間手機會顯示藍色呼吸燈跑馬燈同步。
    * 最終分析完畢，手機與機台將同時以極速回報最終的瑕疵分析與歷史紀錄。
 
+---
 
+## 7. 從零建立 Python 虛擬環境 (使用 requirements.txt)
 
+當你在新電腦上 clone 專案、或原本的 `venv` 資料夾損壞/遺失時，可以透過以下步驟快速重建完整的 Python 執行環境。
 
+> ⚠️ **前置需求**：請先確認電腦上已安裝 **Python 3.10 以上版本**。  
+> 可以在終端機輸入 `python --version` 確認。
 
+### 步驟 1：開啟 PowerShell 並切換到 pc_python 目錄
 
+```powershell
+cd C:\Users\user\Desktop\20260523\Intelligent\project6_defect_detection\pc_python
+```
+
+### 步驟 2：建立全新的虛擬環境
+
+```powershell
+python -m venv venv
+```
+此指令會在當前目錄下建立一個名為 `venv` 的資料夾，裡面包含獨立的 Python 直譯器與 pip 工具。
+
+### 步驟 3：啟動虛擬環境
+
+```powershell
+.\venv\Scripts\Activate.ps1
+```
+啟動成功後，終端機的行首會出現 `(venv)` 字樣，表示你已進入虛擬環境。
+
+> 💡 **如果出現「無法載入檔案，因為這個系統上已停用指令碼執行」的錯誤**，請先執行以下指令解除限制（只需執行一次）：
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
+
+### 步驟 4：使用 requirements.txt 一鍵安裝所有套件
+
+```powershell
+pip install -r requirements.txt
+```
+此指令會自動讀取 `requirements.txt` 中列出的所有套件並安裝，包括：
+| 套件 | 用途 |
+|------|------|
+| `pyserial` | 與 ESP32-CAM / ESP32S 的 Serial 通訊 |
+| `opencv-python` | 影像處理與瑕疵檢測 |
+| `numpy` | 數值與矩陣運算 |
+| `openpyxl` | 匯出 Excel 瑕疵報告 |
+| `ultralytics` | YOLOv8 AI 模型（訓練與推論），會自動安裝 PyTorch 等相依套件 |
+
+> ⏱️ 安裝時間約 5~15 分鐘（視網路速度而定），`ultralytics` 會連帶安裝 PyTorch，檔案較大請耐心等候。
+
+### 步驟 5：確認安裝成功
+
+```powershell
+python -c "import cv2; import serial; import ultralytics; print('所有套件安裝成功！')"
+```
+如果終端機印出 `所有套件安裝成功！`，代表環境已就緒。
+
+### 步驟 6：啟動檢測系統
+
+```powershell
+python defect_detector.py --cam COM5 --ctrl COM6
+```
+> ⚠️ 請將 `COM5` 和 `COM6` 替換為你電腦上實際的 ESP32-CAM 與 ESP32S 的 COM 埠號。
+
+### 完整快速指令（一次複製貼上）
+
+以下提供完整的一鍵流程，適合直接複製貼上到 PowerShell 中執行：
+
+```powershell
 # 1. 切換至程式所在的 pc_python 資料夾
 cd C:\Users\user\Desktop\20260523\Intelligent\project6_defect_detection\pc_python
 
-# 2. 安裝&啟動 AI 套件 (ultralytics, opencv, torch 等) 的虛擬環境
-裡面已有requirements.txt 整理了全部所需的套件 請載到自己的虛擬環境
+# 2. 建立虛擬環境（僅首次需要）
+python -m venv venv
 
+# 3. 啟動虛擬環境
+.\venv\Scripts\Activate.ps1
 
-# 3. 執行檢測系統
+# 4. 安裝所有依賴套件（僅首次需要）
+pip install -r requirements.txt
+
+# 5. 執行檢測系統（請替換為實際的 COM 埠號）
 python defect_detector.py --cam COM5 --ctrl COM6
+```

@@ -91,3 +91,28 @@
 *   **建議解決方案**：
     1.  **改進 Excel 報表**：在 `export_defects_to_excel()` 中新增「檢測方式」欄位（`single_red` / `single_green` / `single_blue` / `full_rgb`），以便未來追蹤與比對。
     2.  **實際對比測試**：在相同角度下，先按 `R` 再按 `SPACE`，即可立即產生兩份可直接對比的報告，驗證單色與全色掃描的檢測差異。
+
+## 16. 首次推送 GitHub 失敗：Repository 過大 (含 venv) 導致 HTTP 500
+*   **日期**：2026/06/19
+*   **問題描述**：執行 `git push -u origin main` 將專案首次推送至 GitHub (`https://github.com/MingOuQ/NTUT_project.git`) 時，出現以下錯誤：
+    ```
+    error: RPC failed; HTTP 500 curl 22 The requested URL returned error: 500
+    send-pack: unexpected disconnect while reading sideband packet
+    fatal: the remote end hung up unexpectedly
+    ```
+    推送結尾雖顯示 `Everything up-to-date`，但實際上遠端 `origin/main` 分支並不存在，確認推送失敗。
+*   **原因分析**：
+    1.  **venv 被納入版本控制**：專案初始化 git 時沒有建立 `.gitignore`，導致兩個 Python 虛擬環境資料夾被完整 commit：
+        *   `pc_server/venv/` — **5.2 GB**（含 PyTorch + CUDA DLLs）
+        *   `project6_defect_detection/pc_python/venv/` — **1.16 GB**
+    2.  **超過 GitHub 限制**：整個 repository 壓縮後達 **3.42 GiB**，其中單一檔案 `torch_cuda.dll` 就有 615 MB，遠超 GitHub 的 100 MB 單檔上限與 2 GB 單次推送建議上限。
+    3.  **實際程式碼大小**：排除 venv 後，真正的程式碼、文件與資料集僅約 **778 MB**（壓縮後 33 MB）。
+*   **解決方案**：
+    1.  **建立 `.gitignore`**：在專案根目錄新增 `.gitignore`，排除 `venv/`、`__pycache__/`、`runs/`（YOLO 訓練產出）、`*.pt`（模型權重檔）等不應上傳的檔案。
+    2.  **從 git 索引移除大型檔案**：使用 `git rm -r --cached` 將已追蹤的 venv、`__pycache__`、runs、`.pt` 檔案從 git 索引中移除（此操作**不會刪除磁碟上的實際檔案**，只是取消 git 追蹤）。
+    3.  **修訂 commit 並清理 git 物件**：透過 `git commit --amend` 重新建立不含大型檔案的 commit，再執行 `git reflog expire --expire=now --all` 與 `git gc --prune=now --aggressive` 徹底清除殘留的 git 物件。
+    4.  **成功推送**：清理後 repository 大小從 3.42 GiB 縮減至 **33.43 MiB**，`git push -u origin main` 順利完成。
+*   **經驗教訓**：
+    1.  **永遠在 `git init` 後第一時間建立 `.gitignore`**，至少要排除 `venv/`、`__pycache__/`、`node_modules/` 等環境相關資料夾。
+    2.  **Python 虛擬環境不應上傳至版本控制系統**，只需攜帶 `requirements.txt`，讓使用者在自己的環境中執行 `pip install -r requirements.txt` 即可重建。
+    3.  **YOLO 訓練產出 (`runs/`) 與預訓練模型權重 (`*.pt`)** 檔案通常過大，也不應納入 git 管理。

@@ -11,8 +11,11 @@ __pycache__/
 # YOLO training runs (contains large model weights)
 runs/
 
-# Pre-trained model weights (large binary files)
-*.pt
+# Pre-trained base model weights (can be re-downloaded from ultralytics)
+yolo*.pt
+
+# Trained model weights in runs/ are excluded by the runs/ rule above
+# But keep best.pt in pc_python/ root (required for AI detection to work)
 
 # IDE / Editor
 .vscode/

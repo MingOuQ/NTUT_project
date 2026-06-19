@@ -1,0 +1,5 @@
+point
+square
+circle
+line_h
+line_v

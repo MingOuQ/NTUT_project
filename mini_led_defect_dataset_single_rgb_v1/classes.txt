@@ -1,0 +1,5 @@
+0 point
+1 square
+2 circle
+3 line_h
+4 line_v

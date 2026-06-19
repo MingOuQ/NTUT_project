@@ -1,0 +1,36 @@
+{
+  "dataset_name": "Mini LED defect dataset - single RGB pixel v1",
+  "description": "Each image contains only one RGB pixel composed of R/G/B subpixels. One random defect is generated within the RGB pixel.",
+  "total_images": 1000,
+  "image_size": [
+    128,
+    128
+  ],
+  "splits": {
+    "train": 800,
+    "val": 200
+  },
+  "classes": {
+    "point": 0,
+    "square": 1,
+    "circle": 2,
+    "line_h": 3,
+    "line_v": 4
+  },
+  "label_format": "YOLO: class_id x_center y_center width height, normalized to [0, 1]",
+  "mask_format": "single-channel binary PNG; 255 indicates defect region",
+  "rules": [
+    "Only one RGB pixel appears in each image.",
+    "Each RGB pixel consists of three subpixels: R, G, and B.",
+    "Each image contains exactly one defect.",
+    "Defect type is randomly selected from point, square, circle, line_h, line_v.",
+    "Defect location is randomly placed inside one of the R/G/B subpixels."
+  ],
+  "classes_txt": {
+    "0": "point",
+    "1": "square",
+    "2": "circle",
+    "3": "line_h",
+    "4": "line_v"
+  }
+}

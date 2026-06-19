@@ -1,0 +1,32 @@
+{
+  "dataset_name": "Mini LED defect dataset RGB + label v2",
+  "total_images": 120,
+  "image_size": [
+    256,
+    256
+  ],
+  "splits": {
+    "train": 96,
+    "val": 24
+  },
+  "classes": {
+    "point": 0,
+    "square": 1,
+    "circle": 2,
+    "line_h": 3,
+    "line_v": 4
+  },
+  "defect_types": [
+    "point",
+    "square",
+    "circle",
+    "line_h",
+    "line_v"
+  ],
+  "rules": [
+    "Each image has 1 to 8 randomly generated defects.",
+    "Multiple defects in one image are allowed.",
+    "Multiple defects may overlap or appear in the same RGB pixel/grid cell.",
+    "Labels are YOLO detection format; masks are binary PNG segmentation masks."
+  ]
+}

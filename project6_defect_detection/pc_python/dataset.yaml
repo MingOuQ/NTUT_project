@@ -1,0 +1,31 @@
+# =============================================================
+#  YOLOv8 Dataset Configuration
+#  Mini LED Defect Detection - RGB Label v2
+# =============================================================
+#
+#  資料集說明：
+#    - 每張 256x256 影像包含 1~8 個隨機生成的瑕疵
+#    - 支援多瑕疵重疊
+#    - 標記格式為 YOLO detection（已含在 labels/ 中）
+#
+#  使用方式：
+#    此檔案供 train_yolo.py 呼叫，無需手動修改。
+# =============================================================
+
+# 資料集根目錄（使用絕對路徑，避免相對路徑問題）
+path: d:/Other_program/Intelligent/mini_led_defect_dataset_rgb_label_v2
+
+# 訓練 / 驗證影像路徑（相對於 path）
+train: train/images
+val: val/images
+
+# 類別數量
+nc: 5
+
+# 類別名稱（順序必須與 label 中的 class_id 一致）
+names:
+  0: point
+  1: square
+  2: circle
+  3: line_h
+  4: line_v

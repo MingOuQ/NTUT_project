@@ -1,0 +1,10 @@
+# Surface Defect Detection System - Python Dependencies
+# Install: pip install -r requirements.txt
+
+pyserial>=3.5       # Serial 通訊 (ESP32-CAM, ESP32S)
+opencv-python>=4.8  # 影像處理 + 瑕疵檢測
+numpy>=1.24         # 數值運算
+openpyxl>=3.1       # Excel 匯出瑕疵報告
+
+# === YOLOv8 AI 模型（瑕疵偵測進階版）===
+ultralytics>=8.0    # YOLOv8 物件偵測（訓練 + 推論）

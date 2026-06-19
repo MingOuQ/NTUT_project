@@ -172,9 +172,9 @@ python defect_detector.py --cam COM3 --ctrl COM4
 # 1. 切換至程式所在的 pc_python 資料夾
 cd C:\Users\user\Desktop\20260523\Intelligent\project6_defect_detection\pc_python
 
-# 2. 啟動該目錄下已安裝好 AI 套件 (ultralytics, opencv, torch 等) 的虛擬環境
-.\venv\Scripts\Activate.ps1
-C:\Users\user\Desktop\20260523\Intelligent\pc_server\venv\Scripts\Activate.ps1
+# 2. 安裝&啟動 AI 套件 (ultralytics, opencv, torch 等) 的虛擬環境
+裡面已有requirements.txt 整理了全部所需的套件 請載到自己的虛擬環境
+
 
 # 3. 執行檢測系統
 python defect_detector.py --cam COM5 --ctrl COM6
